@@ -1,0 +1,25 @@
+{
+  "name": "api-node-2025",
+  "version": "1.0.0",
+  "description": "API REST de usuarios con Node.js 20, Express 5 y MySQL: CRUD seguro, validado y probado",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.12.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.0.1",
+    "mysql2": "^3.11.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
+  }
+}
