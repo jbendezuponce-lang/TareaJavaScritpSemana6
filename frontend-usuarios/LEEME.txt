@@ -1,0 +1,4 @@
+Este ZIP contiene SOLO el código fuente (src/) del frontend en Angular 20 + Bootstrap 5,
+listo para copiarse dentro de un proyecto Angular recién creado con el CLI.
+No genero angular.json/package.json a mano porque el CLI los arma correctamente
+con las versiones exactas de Angular 20; ve las instrucciones que te di en el chat.

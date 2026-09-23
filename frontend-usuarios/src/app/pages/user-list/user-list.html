@@ -1,0 +1,76 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div>
+    <h1 class="h3 mb-0">Usuarios</h1>
+    <small class="text-body-secondary">{{ users().length }} registrados</small>
+  </div>
+  <a routerLink="/usuarios/nuevo" class="btn btn-primary">
+    <i class="bi bi-person-plus me-1"></i> Nuevo usuario
+  </a>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="bi bi-search"></i></span>
+  <input type="search" class="form-control" placeholder="Buscar por nombre o email"
+         [value]="search()" (input)="onSearch($event)" aria-label="Buscar" />
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-body-secondary">Cargando usuarios…</p>
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+    <span><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}</span>
+    <button class="btn btn-sm btn-outline-danger" (click)="load()">Reintentar</button>
+  </div>
+} @else if (filtered().length === 0) {
+  <div class="text-center py-5 text-body-secondary">
+    <i class="bi bi-people display-4"></i>
+    <p class="mt-2">
+      {{ search() ? 'Ningún usuario coincide con la búsqueda.' : 'Aún no hay usuarios. Crea el primero.' }}
+    </p>
+  </div>
+} @else {
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" class="ps-3">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col" class="text-end pe-3">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filtered(); track user.id) {
+            <tr>
+              <td class="ps-3 text-body-secondary">{{ user.id }}</td>
+              <td class="fw-semibold">{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td class="text-end pe-3 text-nowrap">
+                <a [routerLink]="['/usuarios', user.id, 'editar']" class="btn btn-sm btn-outline-primary me-1"
+                   title="Editar">
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <button class="btn btn-sm btn-outline-danger" title="Eliminar" (click)="askDelete(user)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+<app-confirm-dialog
+  [open]="!!toDelete()"
+  title="Eliminar usuario"
+  [message]="'¿Seguro que deseas eliminar a ' + toDelete()?.name + '? Esta acción no se puede deshacer.'"
+  confirmText="Eliminar"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (cancelled)="closeDialog()" />
